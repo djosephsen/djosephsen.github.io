@@ -1,4 +1,4 @@
-baseURL = "https://djosephsen.github.io/"
+baseURL = "https://djosephsen.github.io//"
 languageCode = "en-us"
 title = "One Dave's Blog"
 theme = "m10c"
