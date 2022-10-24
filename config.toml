@@ -1,0 +1,14 @@
+baseURL = "http://djosephsen.github.io/"
+languageCode = "en-us"
+title = "One Dave's Blog"
+theme = "m10c"
+
+[params]
+    author = "Dave Josephsen"
+    description = "The astonishing thoughtfacts of a idiomaniacal mindshepherd"
+    avatar = "avatar.jpg"
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Posts by Tag"
+  url = "/tags/"
