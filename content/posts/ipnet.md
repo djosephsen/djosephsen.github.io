@@ -1,5 +1,6 @@
 ---
 title: "The exasperated engineers guide to IPs in Golang"
+tags: ["golang", "programming", "networking"]
 date: 2023-01-04T13:51:26-06:00
 ---
 
