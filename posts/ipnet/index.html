@@ -1,0 +1,84 @@
+<!doctype html><html lang=en-us><head><title>The exasperated engineers guide to IPs in Golang // One Dave's Blog</title><link rel="shortcut icon" href=/favicon.ico><meta charset=utf-8><meta name=generator content="Hugo 0.80.0"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Dave Josephsen"><meta name=description content><link rel=stylesheet href=/css/main.min.0fb49e70a30412f97ddfc418e18fefef1d9fcdebe45f634dbbba768b00fe1eec.css><meta name=twitter:card content="summary"><meta name=twitter:title content="The exasperated engineers guide to IPs in Golang"><meta name=twitter:description content="If you&rsquo;ve ever needed to store an IP address in Go, you will have come across either net.IP or netip.Addr, or both. If you aren&rsquo;t sure about any of the following:
+ Why are there two of them? (historical reasons) Is one objectively better than the other? (netip.Addr is always better) Which should I use? (netip.Addr) What&rsquo;s the difference? (see below)  Or if you need to understand the implementation details well enough to translate between them, then this article is for you."><meta property="og:title" content="The exasperated engineers guide to IPs in Golang"><meta property="og:description" content="If you&rsquo;ve ever needed to store an IP address in Go, you will have come across either net.IP or netip.Addr, or both. If you aren&rsquo;t sure about any of the following:
+ Why are there two of them? (historical reasons) Is one objectively better than the other? (netip.Addr is always better) Which should I use? (netip.Addr) What&rsquo;s the difference? (see below)  Or if you need to understand the implementation details well enough to translate between them, then this article is for you."><meta property="og:type" content="article"><meta property="og:url" content="https://djosephsen.github.io//posts/ipnet/"><meta property="article:published_time" content="2023-01-04T13:51:26-06:00"><meta property="article:modified_time" content="2023-01-04T13:51:26-06:00"></head><body><header class=app-header><a href=https://djosephsen.github.io//><img class=app-header-avatar src=/avatar.jpg alt="Dave Josephsen"></a>
+<span class=app-header-title>One Dave's Blog</span><nav class=app-header-menu><a class=app-header-menu-item href=/tags/>Posts by Tag</a></nav><p>The astonishing thoughtfacts of a idiomaniacal mindshepherd</p></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>The exasperated engineers guide to IPs in Golang</h1><div class=post-meta><div><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Jan 4, 2023</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><title>clock</title><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>9 min read</div></div></header><div class=post-content><p>If you&rsquo;ve ever needed to store an IP address in Go, you will have come across either <a href=https://pkg.go.dev/net#IP>net.IP</a> or <a href=https://pkg.go.dev/net/netip#Addr>netip.Addr</a>, or both. If you aren&rsquo;t sure about any of the following:</p><ul><li>Why are there two of them? (historical reasons)</li><li>Is one objectively better than the other? (netip.Addr is always better)</li><li>Which should I use? (netip.Addr)</li><li>What&rsquo;s the difference? (see below)</li></ul><p>Or if you need to understand the implementation details well enough to translate between them, then this article is for you. If you found this article by angrily googling about working with IP addresses and subnets in Go, after discovering that such a simple and obvious thing which should be easy is not, you may rest assured dear friend, I&rsquo;m kind of salty about it too. As someone who swims in this swamp daily for my day job, I carry around a <strong>silly</strong> amount of hogwash-context relating to the lovely mess that is IP addressing in Go. So read on if you dare as I unburden myself of some cognitive load, and hopefully help make this whole <code>net.IP</code> vs. <code>netip</code> swamp a little less murky.</p><h3 id=package-net>package net</h3><p>The first data types intended to represent IPs and subnets were built-in to the <a href=https://pkg.go.dev/net>net</a> package. <a href=https://pkg.go.dev/net#IP>net.IP</a> and <a href=https://pkg.go.dev/net#IPNet>net.IPNet</a> were created to hold IP&rsquo;s and subnet addresses respectively. The underlying implementation is a byte-slice, which, at first glance probably makes some sense to you (it did to the net lib creators). <em>What is an IP address, after all, but a series of dot-separated byte values?</em> (Spoiler alert: An IP address is <strong>not</strong> a series of dot-separated byte values.)</p><pre><code>// a net.IP is just a byte slice
+type IP []byte
+
+// a net-mask is the same thing
+type IPMask []byte
+
+// So a net.IPNet just wraps an IP and an IPMask
+type IPNet struct {
+	IP   IP     // network number
+	Mask IPMask // network mask
+}
+</code></pre><p>This implementation is handy because it can model both v4 and v6 addresses (4 bytes for v4, 16 for v6), but working with it turns out to be kind of a pain in the neck. In fact if you examine any of the instance methods defined on these types you&rsquo;ll immediately encounter a conditional that looks something like:</p><pre><code>if ip4 := ip.To4(); ip4 != nil {
+
+</code></pre><p>One of the problems with net.IP and net.IPNet is that, in real life, v4 and v6 addresses almost always wind up needing slightly different handling in some way, and the net primitives don&rsquo;t provide us a very handy means of telling them apart once our value is packed into the slice. So working with net.IP becomes an exercise in incessantly writing these clumsy <em>does it convert to a v4 address?</em> conditionals every time you need to tell them apart (which is always). That probably sounds whiny, but writing these over and over begins to feel inhumane more quickly than you&rsquo;d expect.</p><p>A more serious problem with the type is that it isn&rsquo;t <a href=https://go.dev/ref/spec#Comparison_operators>comparable</a> (doesn&rsquo;t support <code>==</code>) and therefore can&rsquo;t be used as a map key. Also, being a slice, it carries with it mutability, and a zero value that equates to a very inconvenient address (0.0.0.0).</p><p>Further, for all of these problems, the type isn&rsquo;t particularly <em>good</em> at anything. For any human-esque operations like printing, parsing and presenting we wish to perform, we need to convert up to decimal or hex formatted strings. For any math-esque operations we may want to perform, like computing the nth address of a given subnet, or detecting whether address x is contained within subnet y, we need to convert down to bitwise operations on sliced-out bytes. And worst of all, for any computery operations we want to do, like creating a map of net.IP to struct, the correct answer is undefined, so everyone does something unique and surprising.</p><p>If we need to fiddle around with the type format for EVERY operation we perform, perhaps the byte-slice is not an ideal abstraction for network addresses? And given binary operations are kind of the lowest common denominator in this use case, maybe we should just keep the binary value of the address in a pair of uint64&rsquo;s instead. Using a uint64 buys us a comparable, immutable base-type, and handily aligns all the Bit-twiddling operations to a pair of 64-bit registers (or a single register for v4 addresses) which is computationally cheap. Whatever extra cost we incur converting uint64 to hex or decimal strings will be more than made up for by all the time we&rsquo;re saving by not having to glean the size of the byte-slice all the time to tell what kind of address we have, because with an int we can use a bitwise operation to separate v4 from v6. In fact, it turns out EVERYTHING we ever want to do computationally with an IP address reduces to a small number of bitwise operations, because that was <em>entirely the point</em> of IP in the first damn place.</p><p>This brings me back to my earlier rhetorical: <em>what is an ip address if not a dot-separated series of byte values</em>? and of course, the correct answer is: <em>a binary number</em></p><h3 id=package-netnetip>package net/netip</h3><p>The newish <strong>netip</strong> package follows this logic, reimplementing ips and subnets using a &ldquo;uint128&rdquo; struct type that wraps a pair of uint64&rsquo;s. NetIP began as an alternate, external project, but made SO much sense, it was gravitationally slurped into standard lib as <a href=https://pkg.go.dev/net/netip>net/netip</a>. Thus today we have four super-confusingly named types for ips and subnets, all awkwardly cohabitating like frenemies in a 90&rsquo;s sitcom in the standard lib. The <a href=https://pkg.go.dev/net/netip#Addr>netip.Addr</a> type replaces net.IP and holds IPs, and the <a href=https://pkg.go.dev/net/netip#Prefix>netip.Prefix</a> type replaces net.IPNet and holds subnet addresses. Super obvious. What could go wrong?</p><pre><code>// the uint128 base-type wraps two uint64's
+// it comes with a rich assortment of handy instance methods 
+// to help us do math on it
+type uint128 struct {
+	hi uint64
+	lo uint64
+}
+
+// netip.Addr replaces net.IP
+// It ships with an intern.Value to give it a distinct nil value
+// and make v4/v6 checks even faster than a mask op 
+type Addr struct {
+	addr uint128      // the address
+	z *intern.Value   // a metadata tuple
+}
+
+// netip.Prefix replaces net.IPNet
+// Instead of carrying the mask bytes like net.ipnet
+// we wrap an Addr and a CIDR style mask length integer. 
+type Prefix struct {
+	ip Addr
+	bits int16 // really a uint8 with an extra bit to encode validity
+}
+</code></pre><p>This implementation fixes all of the problems I listed above with net lib, giving us an immutable, comparable type, that can wrap both v4 and v6 addresses and whose validity is distinct from its zero-value. As a bonus, it&rsquo;s quite efficient, saves heap allocations (more on that later), and having been given the benefit of hindsight, ships with tons of handy instance methods to help us do things like easily select v4 vs v6, present human-readable formats, and compute the sorts of things we&rsquo;re likely to want to compute like subnet memberships and etc..</p><p>With the net pkg, it&rsquo;s pretty common to reach &ldquo;inside&rdquo; the type to directly access the wrapped slices, whereas netip exports nothing BUT instance methods. That may sound awkward, but I find the uniformity quite nice. With net.IP, I would sometimes forget a method even existed and reflexively start writing code against the byte-slice where, by comparison, EVERYTHING you do with a netip.Addr begins with a method invocation, so you tend to build better muscle memory with the API. To me, package net feels like a suitcase you never finish unpacking, and netip, more like a tool you just pick up and use.</p><p>IMHO you should always choose netip.Addr in green-field projects and everywhere else for that matter. When you come across legacy code that only supports net.IP, I think the &ldquo;right&rdquo; thing to do is add ipnet.Addr support and deprecate net.IP. Some people say I&rsquo;m a dreamer, but I&rsquo;m not the only one.</p><h3 id=dont-pass-netip-pointers>Don&rsquo;t pass netip pointers</h3><p>Another problem with the package net types is that they will always be allocated on the heap, because the compiler doesn&rsquo;t know how much memory to reserve for a byte-slice ahead of time. Netip however, with its concrete underlying int types can be stored on the stack at compile time, saving you allocation and garbage collection, which is a big win if you&rsquo;re dealing with zillions of ips per picosecond like I do. You can undermine the compiler however, by passing pointers to netip types.
+around&mldr;</p><pre><code>func doCoolStuff(prefix *netip.Prefix){  // wrong. passing a ref might result in a heap alloc 
+
+func doCoolStuff(prefix netip.Prefix){  // correct. The compiler will stack this prefix
+</code></pre><h3 id=translating-net-to-netip>Translating net to netip</h3><p>If you have a <code>net.IP</code> and you want a <code>netip.Addr</code>, use the <code>netip.AddrFromSlice()</code> function:</p><pre><code>// convert net.IP to netip.Addr
+func netip2Addr(ip net.IP) (netip.Addr, error) {
+	if addr, ok := netip.AddrFromSlice(ip); ok {
+		return addr, nil
+	}
+	return netip.Addr{}, errors.New(&quot;Invalid IP&quot;)
+}
+</code></pre><p>I&rsquo;m bothering to parse the ok value and return an error above, but it&rsquo;s also common to ignore <code>ok</code> and return an invalid or uninitialized Addr in the event of an error, because the type carries a validity flag that the caller can check with <code>Addr.IsValid()</code>.</p><p>If you have a <code>net.IPNet</code>, and you want a <code>netip.Prefix</code>, you&rsquo;ll need to reach-in to the net.IPNet, glean the address and CIDR length, and use those to build a Prefix with <code>netip.PrefixFrom()</code>. The Addr you can create by using <code>netip.AddrFromSlice()</code> like the last example, and the CIDR length you can get from a pkg/net method call against the <code>net.IPNet.Mask</code> value.</p><pre><code>// convert net.IPNet to netip.Prefix
+func ipnet2Prefix(ipn net.IPNet) netip.Prefix {
+    addr, _ := netip.AddrFromSlice(ipn.IP)
+    cidr, _ := ipn.Mask.Size()
+    return netip.PrefixFrom(addr, cidr)
+}
+</code></pre><h3 id=translating-netip-to-net>Translating netip to net</h3><p>If you have a netip.Addr, and you want a net.IP, no worries, you can use the <code>Addr.AsSlice()</code> method, and simply type-assert the returned byte-slice into a <code>net.IP</code>.</p><pre><code>// convert a netip.Addr to net.IP
+func addr2NetIP(addr netip.Addr) net.IP {
+    return addr.AsSlice()
+}
+</code></pre><p>If you want to dummy proof this, check the validity of the Addr before you make the conversion&mldr;</p><pre><code>// more safely convert a netip.Addr to net.IP
+func addr2NetIP(addr netip.Addr) (net.IP, error) {
+    if addr.IsValid(){
+        return addr.AsSlice(), nil
+    }
+    return net.IP{}, errors.New('Invalid IP')
+}
+</code></pre><p>And finally, if you have a netip.Prefix, and you want a net.IPNet, things get a little complicated, but the idea is to obtain the Addr and prefix length from the Prefix, convert these to byte-slices and manually build a net.IPNet struct with them.</p><pre><code>// convert a netip.Prefix to a net.IPNet
+func prefix2IPNet(prefix netip.Prefix) net.IPNet {
+    addr := prefix.Addr() // extract the address portion of the prefix
+    pLen := 128 // plen is the total size of the subnet mask
+    if addr.Is4() {
+        pLen = 32
+    }
+    ones := prefix.Bits() // ones is the portion of the mask that's set
+    ip := net.IP(addr.AsSlice()) // convert the address portion to net.IP
+    mask := net.CIDRMask(ones, pLen) // create a net.IPMask 
+    return net.IPNet{  // and construct the final IPNet
+        IP:   ip,
+        Mask: mask,
+    }
+}
+</code></pre><p>take it easy.
+&ndash;dave</p></div><div class=post-footer></div></article></main></body></html>
