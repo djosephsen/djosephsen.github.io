@@ -1,7 +1,6 @@
 ---
 title: "The exasperated engineers guide to IPs in Golang"
 date: 2023-01-04T13:51:26-06:00
-draft: true
 ---
 
 If you've ever needed to store an IP address in Go, you will have come across either [net.IP](https://pkg.go.dev/net#IP) or [netip.Addr](https://pkg.go.dev/net/netip#Addr), or both. If you aren't sure about any of the following:
@@ -162,3 +161,6 @@ func prefix2IPNet(prefix netip.Prefix) net.IPNet {
     }
 }
 ```
+
+take it easy.
+--dave
