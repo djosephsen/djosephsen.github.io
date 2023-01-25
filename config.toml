@@ -12,3 +12,13 @@ theme = "m10c"
   identifier = "tags"
   name = "Posts by Tag"
   url = "/tags/"
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Posts by Tag"
+  url = "/tags/"
+
+[[params.social]]
+  icon = "rss"
+  name = "RSS"
+  url = "http://djosephsen.github.io/index.xml"
