@@ -31,7 +31,7 @@ theme = "m10c"
 [[params.social]]
   icon = "twitter"
   name = "Twitter"
-  url = "https://hachyderm.io/@DaveJosephsen"
+  url = "https://twitter.com/@DaveJosephsen"
 
 [[params.social]]
   icon = "github"
