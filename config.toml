@@ -32,3 +32,14 @@ theme = "m10c"
   icon = "twitter"
   name = "Twitter"
   url = "https://hachyderm.io/@DaveJosephsen"
+
+[[params.social]]
+  icon = "github"
+  name = "Github"
+  url = "http://github.com/djosephsen"
+
+[[params.social]]
+  icon = "linkein"
+  name = "Linked-in"
+  url = "https://www.linkedin.com/in/davejosephsen/"
+
