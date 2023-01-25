@@ -14,9 +14,9 @@ theme = "m10c"
   url = "/tags/"
 
 [[menu.main]]
-  identifier = "tags"
-  name = "Posts by Tag"
-  url = "/tags/"
+  identifier = "rss"
+  name = "rss"
+  url = "/index.xml"
 
 [[params.social]]
   icon = "rss"
