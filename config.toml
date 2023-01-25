@@ -22,3 +22,13 @@ theme = "m10c"
   icon = "rss"
   name = "RSS"
   url = "http://djosephsen.github.io/index.xml"
+
+[[params.social]]
+  icon = "mastodon"
+  name = "Mastodon"
+  url = "https://hachyderm.io/@djosephsen"
+
+[[params.social]]
+  icon = "twitter"
+  name = "Twitter"
+  url = "https://hachyderm.io/@DaveJosephsen"
