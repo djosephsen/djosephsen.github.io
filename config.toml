@@ -5,12 +5,12 @@ theme = "m10c"
 
 [params]
     author = "Dave Josephsen"
-    description = "The astonishing thoughtfacts of a idiomaniacal mindshepherd"
+    description = "The astonishing thoughtfacts of an idiomaniacal mindshepherd"
     avatar = "avatar.jpg"
 
 [[menu.main]]
   identifier = "tags"
-  name = "Posts by Tag"
+  name = "Tags"
   url = "/tags/"
 
 [[menu.main]]
