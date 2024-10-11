@@ -4,27 +4,23 @@
     <title>One Dave&#39;s Blog</title>
     <link>https://djosephsen.github.io//</link>
     <description>Recent content on One Dave&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Jan 2023 13:51:26 -0600</lastBuildDate><atom:link href="https://djosephsen.github.io//index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Jan 2023 13:51:26 -0600</lastBuildDate>
+    <atom:link href="https://djosephsen.github.io//index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The exasperated engineers guide to IPs in Golang</title>
       <link>https://djosephsen.github.io//posts/ipnet/</link>
       <pubDate>Wed, 04 Jan 2023 13:51:26 -0600</pubDate>
-      
       <guid>https://djosephsen.github.io//posts/ipnet/</guid>
-      <description>If you&amp;rsquo;ve ever needed to store an IP address in Go, you will have come across either net.IP or netip.Addr, or both. If you aren&amp;rsquo;t sure about any of the following:
- Why are there two of them? (historical reasons) Is one objectively better than the other? (netip.Addr is always better) Which should I use? (netip.Addr) What&amp;rsquo;s the difference? (see below)  Or if you need to understand the implementation details well enough to translate between them, then this article is for you.</description>
+      <description>&lt;p&gt;If you&amp;rsquo;ve ever needed to store an IP address in Go, you will have come across either &lt;a href=&#34;https://pkg.go.dev/net#IP&#34;&gt;net.IP&lt;/a&gt; or &lt;a href=&#34;https://pkg.go.dev/net/netip#Addr&#34;&gt;netip.Addr&lt;/a&gt;, or both. If you aren&amp;rsquo;t sure about any of the following:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Why are there two of them? (historical reasons)&lt;/li&gt;&#xA;&lt;li&gt;Is one objectively better than the other? (netip.Addr is always better)&lt;/li&gt;&#xA;&lt;li&gt;Which should I use? (netip.Addr)&lt;/li&gt;&#xA;&lt;li&gt;What&amp;rsquo;s the difference? (see below)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Or if you need to understand the implementation details well enough to translate between them, then this article is for you. If you found this article by angrily googling about working with IP addresses and subnets in Go, after discovering that such a simple and obvious thing which should be easy is not, you may rest assured dear friend, I&amp;rsquo;m kind of salty about it too. As someone who swims in this swamp daily for my day job, I carry around a &lt;strong&gt;silly&lt;/strong&gt; amount of hogwash-context relating to the lovely mess that is IP addressing in Go. So read on if you dare as I unburden myself of some cognitive load, and hopefully help make this whole &lt;code&gt;net.IP&lt;/code&gt; vs. &lt;code&gt;netip&lt;/code&gt; swamp a little less murky.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Hello World</title>
       <link>https://djosephsen.github.io//posts/hello_world/</link>
       <pubDate>Sun, 23 Oct 2022 12:13:01 -0600</pubDate>
-      
       <guid>https://djosephsen.github.io//posts/hello_world/</guid>
-      <description>Dave&amp;rsquo;s back on his blog bullshit There is a login magazine-shaped hole in my heart. Having written the &amp;ldquo;monitoring&amp;rdquo; column for that magazine for a span of time so vast, that not only has the term &amp;ldquo;monitoring&amp;rdquo; become passé, but the very notion of a magazine about computer science has lost its place in the world, I find myself in the wake of login&amp;rsquo;s &amp;ldquo;evolution&amp;rdquo;, feeling out of touch and lonely.</description>
+      <description>&lt;h1 id=&#34;daves-back-on-his-blog-bullshit&#34;&gt;Dave&amp;rsquo;s back on his blog bullshit&lt;/h1&gt;&#xA;&lt;p&gt;There is a &lt;a href=&#34;https://www.usenix.org/publications/login&#34;&gt;login magazine&lt;/a&gt;-shaped hole in my heart.  Having written the &amp;ldquo;monitoring&amp;rdquo; column for that magazine for a span of time so vast, that not only has the term &amp;ldquo;monitoring&amp;rdquo; become passé, but &lt;em&gt;the very notion of a magazine about computer science&lt;/em&gt; has lost its place in the world, I find myself in the wake of login&amp;rsquo;s &amp;ldquo;evolution&amp;rdquo;, feeling out of touch and lonely. Bereft, not only of a therapudic outlet for my nagging inner-voice, but also of a cherished lens I relied upon to understand the world.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

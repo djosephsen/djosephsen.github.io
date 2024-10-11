@@ -1,59 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://djosephsen.github.io//tags/golang/</loc>
-    <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://djosephsen.github.io//tags/networking/</loc>
-    <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://djosephsen.github.io//</loc>
-    <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2023-03-23T18:15:52-05:00</lastmod>
+  </url><url>
     <loc>https://djosephsen.github.io//posts/</loc>
+    <lastmod>2023-03-23T18:15:52-05:00</lastmod>
+  </url><url>
+    <loc>https://djosephsen.github.io//tags/golang/</loc>
     <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://djosephsen.github.io//tags/networking/</loc>
+    <lastmod>2023-01-04T13:51:26-06:00</lastmod>
+  </url><url>
     <loc>https://djosephsen.github.io//tags/programming/</loc>
     <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//tags/</loc>
     <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//posts/ipnet/</loc>
     <lastmod>2023-01-04T13:51:26-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//posts/hello_world/</loc>
     <lastmod>2022-10-23T12:13:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//tags/personal/</loc>
     <lastmod>2022-10-23T12:13:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//tags/pontificating/</loc>
     <lastmod>2022-10-23T12:13:01-06:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://djosephsen.github.io//categories/</loc>
   </url>
-  
 </urlset>
