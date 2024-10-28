@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pontificating on One Dave&#39;s Blog</title>
-    <link>https://djosephsen.github.io//tags/pontificating/</link>
+    <link>http://localhost:1313//tags/pontificating/</link>
     <description>Recent content in Pontificating on One Dave&#39;s Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 23 Oct 2022 12:13:01 -0600</lastBuildDate>
-    <atom:link href="https://djosephsen.github.io//tags/pontificating/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313//tags/pontificating/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello World</title>
-      <link>https://djosephsen.github.io//posts/hello_world/</link>
+      <link>http://localhost:1313//posts/hello_world/</link>
       <pubDate>Sun, 23 Oct 2022 12:13:01 -0600</pubDate>
-      <guid>https://djosephsen.github.io//posts/hello_world/</guid>
+      <guid>http://localhost:1313//posts/hello_world/</guid>
       <description>&lt;h1 id=&#34;daves-back-on-his-blog-bullshit&#34;&gt;Dave&amp;rsquo;s back on his blog bullshit&lt;/h1&gt;&#xA;&lt;p&gt;There is a &lt;a href=&#34;https://www.usenix.org/publications/login&#34;&gt;login magazine&lt;/a&gt;-shaped hole in my heart.  Having written the &amp;ldquo;monitoring&amp;rdquo; column for that magazine for a span of time so vast, that not only has the term &amp;ldquo;monitoring&amp;rdquo; become passé, but &lt;em&gt;the very notion of a magazine about computer science&lt;/em&gt; has lost its place in the world, I find myself in the wake of login&amp;rsquo;s &amp;ldquo;evolution&amp;rdquo;, feeling out of touch and lonely. Bereft, not only of a therapudic outlet for my nagging inner-voice, but also of a cherished lens I relied upon to understand the world.&lt;/p&gt;</description>
     </item>
   </channel>
