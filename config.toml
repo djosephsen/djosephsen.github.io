@@ -4,42 +4,41 @@ title = "One Dave's Blog"
 theme = "m10c"
 
 [params]
-    author = "Dave Josephsen"
-    description = "The astonishing thoughtfacts of an idiomaniacal mindshepherd"
-    avatar = "avatar.jpg"
+author = "Dave Josephsen"
+description = "The astonishing thoughtfacts of an idiomaniacal mindshepherd"
+avatar = "avatar.jpg"
 
 [[menu.main]]
-  identifier = "tags"
-  name = "Tags"
-  url = "/tags/"
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
 
 [[menu.main]]
-  identifier = "rss"
-  name = "rss"
-  url = "/index.xml"
+identifier = "rss"
+name = "rss"
+url = "/index.xml"
 
 [[params.social]]
-  icon = "rss"
-  name = "RSS"
-  url = "http://djosephsen.github.io/index.xml"
+icon = "rss"
+name = "RSS"
+url = "http://djosephsen.github.io/index.xml"
 
 [[params.social]]
-  icon = "mastodon"
-  name = "Mastodon"
-  url = "https://hachyderm.io/@djosephsen"
+icon = "mastodon"
+name = "Mastodon"
+url = "https://hachyderm.io/@djosephsen"
 
 [[params.social]]
-  icon = "twitter"
-  name = "Twitter"
-  url = "https://twitter.com/@DaveJosephsen"
+icon = "twitter"
+name = "Twitter"
+url = "https://twitter.com/@DaveJosephsen"
 
 [[params.social]]
-  icon = "github"
-  name = "Github"
-  url = "http://github.com/djosephsen"
+icon = "github"
+name = "Github"
+url = "http://github.com/djosephsen"
 
 [[params.social]]
-  icon = "linkein"
-  name = "Linked-in"
-  url = "https://www.linkedin.com/in/davejosephsen/"
-
+icon = "linkedin"
+name = "Linked-in"
+url = "https://www.linkedin.com/in/davejosephsen/"
