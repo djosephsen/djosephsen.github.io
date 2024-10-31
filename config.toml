@@ -5,6 +5,7 @@ theme = "m10c"
 
 [params]
 author = "Dave Josephsen"
+authorformal = "David J. Josephsen"
 description = "The astonishing thoughtfacts of an idiomaniacal mindshepherd"
 avatar = "avatar.jpg"
 
@@ -42,3 +43,6 @@ url = "http://github.com/djosephsen"
 icon = "linkedin"
 name = "Linked-in"
 url = "https://www.linkedin.com/in/davejosephsen/"
+
+[[params.mysite]]
+copystart = "2019"
