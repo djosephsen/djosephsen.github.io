@@ -2,6 +2,7 @@ baseURL = "https://djosephsen.github.io//"
 languageCode = "en-us"
 title = "One Dave's Blog"
 theme = "m10c"
+copystart = "2020"
 
 [params]
 author = "Dave Josephsen"
@@ -43,6 +44,3 @@ url = "http://github.com/djosephsen"
 icon = "linkedin"
 name = "Linked-in"
 url = "https://www.linkedin.com/in/davejosephsen/"
-
-[[params.mysite]]
-copystart = "2019"

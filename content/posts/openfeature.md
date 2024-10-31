@@ -1,6 +1,5 @@
 ---
 title: "The cloud foreigner's guide to OpenFeature"
-date: 2024-11-10:36:53-07:00
 draft: true
 ---
 
